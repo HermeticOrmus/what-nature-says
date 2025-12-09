@@ -1,0 +1,513 @@
+/* ========================================
+   WHAT NATURE SAYS - Mobile & iOS Optimizations
+   Touch-first, child-friendly interface
+   ======================================== */
+
+/* ===== iOS SAFE AREAS ===== */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+/* ===== PREVENT iOS QUIRKS ===== */
+html {
+  /* Prevent rubber-banding on iOS */
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: fixed;
+  width: 100%;
+
+  /* Prevent text selection on long press */
+  -webkit-user-select: none;
+  user-select: none;
+
+  /* Prevent callout on long press */
+  -webkit-touch-callout: none;
+
+  /* Smooth momentum scrolling */
+  overscroll-behavior: none;
+}
+
+/* Allow text selection in specific areas if needed */
+.allow-select {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* ===== APP CONTAINER - Full Screen ===== */
+#app {
+  padding-top: calc(var(--space-4) + var(--safe-top));
+  padding-bottom: calc(var(--space-4) + var(--safe-bottom));
+  padding-left: calc(var(--space-4) + var(--safe-left));
+  padding-right: calc(var(--space-4) + var(--safe-right));
+  min-height: 100%;
+  max-width: 100%;
+}
+
+/* ===== LARGER TOUCH TARGETS FOR MOBILE ===== */
+
+/* All buttons bigger on mobile */
+.btn {
+  min-height: 56px;
+  min-width: 56px;
+  padding: var(--space-4) var(--space-6);
+  font-size: 1.125rem;
+}
+
+.btn-large {
+  min-height: 64px;
+  padding: var(--space-5) var(--space-8);
+  font-size: 1.25rem;
+}
+
+.btn-icon {
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+}
+
+/* Verb buttons - extra chunky for little fingers */
+.verb-btn {
+  min-height: 60px;
+  min-width: 100px;
+  padding: var(--space-4) var(--space-5);
+  font-size: 1.125rem;
+  margin: var(--space-2);
+}
+
+/* Fun fact toggle - full width, easy to tap */
+.fun-fact-toggle {
+  min-height: 60px;
+  padding: var(--space-4) var(--space-5);
+  font-size: 1.125rem;
+}
+
+/* Navigation dots - bigger tap targets */
+.nav-dot {
+  width: 16px;
+  height: 16px;
+  /* Invisible tap area extends beyond visible dot */
+  position: relative;
+}
+
+.nav-dot::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+}
+
+/* ===== ELEMENT PAGE - Fit in viewport ===== */
+.element-page {
+  justify-content: space-between;
+}
+
+.element-page .element-container {
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* ===== ELEMENT VISUAL - Responsive sizing ===== */
+.element-visual {
+  width: clamp(100px, 22vh, 160px);
+  height: clamp(100px, 22vh, 160px);
+}
+
+.element-placeholder {
+  font-size: clamp(2.5rem, 12vh, 4rem);
+}
+
+/* ===== QUESTION TEXT - Readable on mobile ===== */
+.question {
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  padding: 0 var(--space-2);
+  max-width: 100%;
+  margin: 0;
+}
+
+/* ===== VERB BUTTONS CONTAINER ===== */
+.verb-buttons {
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  flex-shrink: 0;
+}
+
+/* ===== FUN FACT - Compact ===== */
+.fun-fact {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* ===== NAVIGATION CONTROLS ===== */
+.nav-controls {
+  padding: var(--space-3) 0;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* ===== DRAWING PAGE OPTIMIZATIONS ===== */
+.draw-page .card {
+  padding: var(--space-4);
+}
+
+.draw-page h2 {
+  font-size: clamp(1.25rem, 5vw, 1.5rem);
+  margin-bottom: var(--space-5);
+}
+
+/* Color picker - larger swatches */
+#colorPicker {
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+}
+
+#colorPicker button {
+  width: 52px;
+  height: 52px;
+}
+
+/* Canvas container */
+#drawCanvas {
+  border: 3px solid var(--gentle-gray);
+  border-radius: var(--radius-large);
+}
+
+/* Drawing buttons */
+.draw-page .btn-secondary,
+.draw-page .btn-primary {
+  flex: 1;
+  max-width: 150px;
+}
+
+/* ===== COVER PAGE ===== */
+.cover-page {
+  padding: calc(var(--space-8) + var(--safe-top)) var(--space-5) calc(var(--space-8) + var(--safe-bottom));
+}
+
+.cover-visual {
+  width: min(200px, 45vw);
+  height: min(200px, 45vw);
+}
+
+.cover-title {
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+}
+
+.cover-subtitle {
+  font-size: clamp(1rem, 4vw, 1.25rem);
+}
+
+.cover-start {
+  min-height: 64px;
+  min-width: 160px;
+  font-size: 1.25rem;
+}
+
+/* ===== PAUSE PAGE ===== */
+.pause-prompt {
+  padding: var(--space-8) var(--space-4);
+}
+
+.pause-prompt .icon {
+  font-size: clamp(3rem, 15vw, 5rem);
+}
+
+.pause-prompt p {
+  font-size: clamp(1.25rem, 5vw, 1.5rem);
+}
+
+/* ===== END PAGE ===== */
+.end-page h2 {
+  font-size: clamp(1.25rem, 5vw, 1.5rem);
+}
+
+/* ===== SWIPE INDICATOR (visual hint) ===== */
+.swipe-hint {
+  position: fixed;
+  bottom: calc(100px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
+  opacity: 0;
+  transition: opacity var(--transition-gentle);
+  pointer-events: none;
+  z-index: var(--z-toast);
+}
+
+.swipe-hint.visible {
+  opacity: 1;
+}
+
+.swipe-hint .arrow {
+  animation: swipeArrow 1.5s ease-in-out infinite;
+}
+
+@keyframes swipeArrow {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+
+/* ===== ACTIVE STATES FOR TOUCH ===== */
+.btn:active,
+.verb-btn:active,
+.fun-fact-toggle:active,
+.nav-dot:active {
+  transform: scale(0.95);
+  opacity: 0.9;
+}
+
+/* Remove hover effects on touch devices */
+@media (hover: none) {
+  .btn:hover,
+  .verb-btn:hover,
+  .btn-icon:hover {
+    transform: none;
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .verb-btn:active {
+    transform: scale(0.95) rotate(-1deg);
+  }
+}
+
+/* ===== LANDSCAPE MODE ===== */
+@media (orientation: landscape) and (max-height: 500px) {
+  .element-visual {
+    width: min(150px, 30vh);
+    height: min(150px, 30vh);
+  }
+
+  .element-placeholder {
+    font-size: clamp(2rem, 10vh, 3rem);
+  }
+
+  .question {
+    font-size: 1.125rem;
+  }
+
+  .verb-buttons {
+    padding: var(--space-2) 0;
+  }
+
+  .verb-btn {
+    min-height: 48px;
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .nav-controls {
+    padding: var(--space-2) 0;
+  }
+
+  .cover-visual {
+    width: min(120px, 25vh);
+    height: min(120px, 25vh);
+  }
+
+  .pause-prompt {
+    padding: var(--space-4);
+  }
+}
+
+/* ===== TABLET (iPad) OPTIMIZATIONS ===== */
+@media (min-width: 768px) {
+  #app {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .element-visual {
+    width: 280px;
+    height: 280px;
+  }
+
+  .element-placeholder {
+    font-size: 6rem;
+  }
+
+  .question {
+    font-size: 1.75rem;
+  }
+
+  .verb-btn {
+    min-height: 64px;
+    min-width: 120px;
+    font-size: 1.25rem;
+  }
+
+  .cover-visual {
+    width: 260px;
+    height: 260px;
+  }
+
+  .cover-title {
+    font-size: 3rem;
+  }
+
+  .cover-start {
+    min-height: 72px;
+    min-width: 200px;
+    font-size: 1.5rem;
+  }
+
+  #colorPicker button {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* ===== ACCESSIBILITY: REDUCE MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .swipe-hint .arrow {
+    animation: none;
+  }
+
+  .element-placeholder,
+  .cover-visual {
+    animation: none;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  .btn,
+  .verb-btn {
+    border: 2px solid currentColor;
+  }
+
+  .element-placeholder {
+    border: 3px solid var(--text-primary);
+  }
+}
+
+/* ===== LARGE TEXT MODE ===== */
+@media (prefers-reduced-data: reduce) {
+  /* Skip loading web fonts, use system fonts */
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  }
+}
+
+/* ===== TOUCH FEEDBACK ===== */
+
+/* Ensure buttons have visual feedback on touch */
+.btn,
+.verb-btn,
+.fun-fact-toggle,
+.btn-icon {
+  -webkit-tap-highlight-color: rgba(155, 135, 199, 0.3);
+  cursor: pointer;
+}
+
+/* Add subtle press animation */
+@keyframes buttonPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.btn:active,
+.verb-btn:active {
+  animation: buttonPress 0.2s ease-out;
+}
+
+/* ===== DRAWING CANVAS TOUCH ===== */
+#drawCanvas {
+  /* Prevent any touch callouts */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  /* Ensure touch events work properly */
+  touch-action: none;
+
+  /* Visual feedback that it's touchable */
+  cursor: crosshair;
+}
+
+/* Color picker touch optimization */
+#colorPicker button {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+#colorPicker button:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+/* ===== SMALL PHONES (iPhone SE, etc.) ===== */
+@media (max-width: 375px) {
+  .cover-title {
+    font-size: 1.5rem;
+  }
+
+  .cover-visual {
+    width: min(140px, 35vw);
+    height: min(140px, 35vw);
+  }
+
+  .element-visual {
+    width: min(160px, 40vw);
+    height: min(160px, 40vw);
+  }
+
+  .verb-btn {
+    min-height: 52px;
+    min-width: 80px;
+    font-size: 1rem;
+  }
+
+  .btn-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .question {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===== iOS NOTCH DEVICES (iPhone X+) ===== */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .cover-page,
+  .element-page,
+  .pause-page,
+  .draw-page,
+  .end-page {
+    padding-left: max(var(--space-4), env(safe-area-inset-left));
+    padding-right: max(var(--space-4), env(safe-area-inset-right));
+  }
+
+  .nav-controls {
+    padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom));
+  }
+}

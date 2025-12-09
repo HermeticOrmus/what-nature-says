@@ -1,0 +1,313 @@
+/* ========================================
+   WHAT NATURE SAYS - Base Styles
+   Reset + Typography + Global Elements
+   ======================================== */
+
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-medium);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+  background-color: var(--soft-cream);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--text-title);
+}
+
+h2 {
+  font-size: var(--text-large);
+}
+
+h3 {
+  font-size: var(--text-medium);
+}
+
+p {
+  margin-bottom: var(--space-4);
+}
+
+/* Question text - the heart of each page */
+.question {
+  font-family: var(--font-heading);
+  font-size: var(--text-large);
+  font-weight: 600;
+  font-style: italic;
+  text-align: center;
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* Element adjective styling */
+.adjective {
+  font-weight: 700;
+  color: var(--element-color, var(--world-violet));
+}
+
+/* Element name styling */
+.element-name {
+  font-weight: 800;
+  color: var(--element-color, var(--world-violet-deep));
+  text-transform: capitalize;
+}
+
+/* Verb styling */
+.verb {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* ===== LINKS ===== */
+a {
+  color: var(--world-violet-deep);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover,
+a:focus {
+  color: var(--world-violet);
+}
+
+/* ===== IMAGES ===== */
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== BUTTONS ===== */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ===== FOCUS STATES (Accessibility) ===== */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--world-violet);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background-color: var(--world-violet-light);
+  color: var(--text-primary);
+}
+
+/* ===== SCROLLBAR (Subtle) ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gentle-gray);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--world-violet-light);
+}
+
+/* ===== UTILITY CLASSES ===== */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ===== APP CONTAINER ===== */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: var(--page-padding);
+  padding-bottom: calc(var(--page-padding) + var(--safe-area-bottom));
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== PAGE STRUCTURE ===== */
+.page {
+  display: none !important;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* Prevent overflow */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.page.active {
+  display: flex !important;
+}
+
+/* Element page needs relative positioning for top controls */
+.element-page {
+  position: relative;
+  padding-top: calc(var(--space-3) + 50px); /* Space for top controls */
+}
+
+/* ===== PAGE TURN ANIMATIONS ===== */
+
+/* Smooth, gentle page turn - child-friendly pacing */
+.page.flip-enter {
+  animation: pageIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.page.flip-exit {
+  animation: pageOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  z-index: 0;
+}
+
+@keyframes pageIn {
+  0% {
+    opacity: 0;
+    transform: translateX(60px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes pageOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.96);
+  }
+}
+
+/* Page turn backward */
+.page.flip-back-enter {
+  animation: pageBackIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.page.flip-back-exit {
+  animation: pageBackOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  z-index: 0;
+}
+
+@keyframes pageBackIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-60px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes pageBackOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(40px) scale(0.96);
+  }
+}
+
+/* ===== LOADING STATE ===== */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.loading::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--gentle-gray);
+  border-top-color: var(--world-violet);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

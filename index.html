@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- iOS-optimized viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="An interactive children's book about listening to nature">
+  <meta name="theme-color" content="#9b87c7">
+
+  <!-- iOS PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Nature Says">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Prevent iOS text size adjustment -->
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- iOS splash screens would go here -->
+
+  <title>What Nature Says</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Favicon & iOS Icons -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/images/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icon-180.png">
+
+  <!-- Preload fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/mobile.css">
+
+  <style>
+    /* Critical CSS for first paint */
+    .cover-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      text-align: center;
+      padding: var(--space-6);
+      background: linear-gradient(
+        180deg,
+        var(--soft-cream) 0%,
+        var(--world-violet-light) 100%
+      );
+    }
+
+    .cover-title {
+      font-size: clamp(2rem, 8vw, 3rem);
+      font-weight: 800;
+      color: var(--world-violet-deep);
+      margin-bottom: var(--space-4);
+      line-height: 1.2;
+    }
+
+    .cover-subtitle {
+      font-size: var(--text-medium);
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: var(--space-8);
+    }
+
+    .cover-visual {
+      width: 200px;
+      height: 200px;
+      margin-bottom: var(--space-6);
+      border-radius: var(--radius-round);
+      background: linear-gradient(
+        135deg,
+        var(--nature-green) 0%,
+        var(--sky-blue) 25%,
+        var(--world-violet) 50%,
+        var(--sun-gold) 75%,
+        var(--ocean-teal) 100%
+      );
+      box-shadow: var(--shadow-glow), var(--shadow-lifted);
+      animation: coverPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes coverPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 30px var(--world-violet-glow), var(--shadow-lifted);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 50px var(--world-violet-glow), var(--shadow-lifted);
+      }
+    }
+
+    .cover-start {
+      min-height: var(--touch-primary);
+      padding: var(--space-4) var(--space-8);
+      font-size: var(--text-medium);
+      font-weight: 700;
+      background: var(--world-violet);
+      color: var(--cloud-white);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--shadow-medium);
+      transition: all var(--transition-bounce);
+    }
+
+    .cover-start:hover,
+    .cover-start:focus {
+      background: var(--world-violet-deep);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: var(--shadow-lifted);
+    }
+
+    .cover-start:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .cover-author {
+      margin-top: var(--space-8);
+      font-size: var(--text-small);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Cover Page -->
+    <div class="page cover-page active" data-page="cover">
+      <div class="cover-visual" aria-hidden="true"></div>
+
+      <h1 class="cover-title">What Nature Says</h1>
+      <p class="cover-subtitle">When you pause and listen...</p>
+
+      <button class="cover-start btn" id="startBtn" aria-label="Start reading">
+        Begin
+      </button>
+
+      <p class="cover-author">by Lyndi Allison</p>
+    </div>
+
+    <!-- Element Pages (dynamically loaded) -->
+    <div class="page element-page" data-page="element" data-element="">
+      <!-- Top Controls: Reading Mode & Stars -->
+      <div class="element-top-controls">
+        <button class="btn btn-icon reading-mode-btn" id="readModeBtn" aria-label="Toggle reading mode" title="Read to me">
+          <span class="icon">🔊</span>
+        </button>
+        <div class="stars-display" id="starsDisplay">
+          <span class="star-icon">⭐</span>
+          <span class="star-count" id="starCount">0</span>
+        </div>
+      </div>
+
+      <div class="element-container">
+        <div class="element-visual">
+          <div class="element-placeholder" aria-hidden="true"></div>
+          <div class="element-star-indicator" id="elementStarIndicator" aria-hidden="true"></div>
+        </div>
+
+        <div class="question-container">
+          <p class="question" id="elementQuestion"></p>
+          <button class="btn btn-icon play-btn" id="playNarrationBtn" aria-label="Play narration" title="Read aloud">
+            <span class="icon">▶</span>
+          </button>
+        </div>
+
+        <div class="verb-buttons" id="verbButtons"></div>
+
+        <div class="fun-fact" id="funFact">
+          <button class="fun-fact-toggle" aria-expanded="false">
+            <span>Did you know?</span>
+            <span class="icon" aria-hidden="true">▼</span>
+          </button>
+          <div class="fun-fact-content">
+            <p id="funFactText"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <button class="btn btn-icon" id="prevBtn" aria-label="Previous page">
+          ←
+        </button>
+        <div class="nav-dots" id="navDots" role="navigation" aria-label="Page navigation"></div>
+        <button class="btn btn-icon" id="nextBtn" aria-label="Next page">
+          →
+        </button>
+      </div>
+    </div>
+
+    <!-- Pause & Listen Page -->
+    <div class="page pause-page" data-page="pause">
+      <div class="pause-prompt">
+        <span class="icon" aria-hidden="true">🌿</span>
+        <p>Pause and listen.<br>What does Nature say to you?</p>
+      </div>
+
+      <div class="nav-controls">
+        <button class="btn btn-icon" id="pausePrevBtn" aria-label="Previous page">
+          ←
+        </button>
+        <div class="nav-dots" id="pauseNavDots" role="navigation" aria-label="Page navigation"></div>
+        <button class="btn btn-icon" id="pauseNextBtn" aria-label="Go to drawing">
+          →
+        </button>
+      </div>
+    </div>
+
+    <!-- Drawing Page -->
+    <div class="page draw-page" data-page="draw">
+      <h2 class="text-center" style="margin-bottom: var(--space-4);">
+        Draw what Nature says to you
+      </h2>
+
+      <div class="card" style="flex: 1; display: flex; flex-direction: column; padding: var(--space-3);">
+        <canvas id="drawCanvas" style="flex: 1; border-radius: var(--radius-medium); background: var(--cloud-white); touch-action: none;"></canvas>
+
+        <div class="color-picker" id="colorPicker" style="display: flex; justify-content: center; gap: var(--space-2); margin-top: var(--space-3);"></div>
+
+        <div style="display: flex; justify-content: center; gap: var(--space-3); margin-top: var(--space-3);">
+          <button class="btn btn-secondary" id="clearBtn">Clear</button>
+          <button class="btn btn-primary" id="saveBtn">Save Drawing</button>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <button class="btn btn-icon" id="drawPrevBtn" aria-label="Previous page">
+          ←
+        </button>
+        <button class="btn btn-primary" id="finishBtn">
+          Finish
+        </button>
+      </div>
+    </div>
+
+    <!-- End Page -->
+    <div class="page end-page" data-page="end">
+      <div class="element-container">
+        <div class="cover-visual" aria-hidden="true"></div>
+
+        <h2 class="text-center" style="color: var(--world-violet-deep); margin-bottom: var(--space-4);">
+          When we pause and listen,<br>we hear what Nature says.
+        </h2>
+
+        <p class="text-center" style="color: var(--text-secondary); font-style: italic;">
+          Thank you for listening with Nature today.
+        </p>
+
+        <button class="btn btn-primary btn-large" id="restartBtn" style="margin-top: var(--space-6);">
+          Read Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/data.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/progress.js"></script>
+  <script src="/js/app.js"></script>
+
+  <!-- Service Worker Registration (DISABLED for debugging) -->
+  <script>
+    // Unregister any existing service workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+          console.log('SW unregistered');
+        }
+      });
+    }
+    console.log('Service Worker DISABLED for debugging');
+  </script>
+</body>
+</html>
